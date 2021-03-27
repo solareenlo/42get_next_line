@@ -6,7 +6,7 @@
 /*   By: tayamamo <tayamamo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 18:23:41 by tayamamo          #+#    #+#             */
-/*   Updated: 2021/03/25 17:11:42 by tayamamo         ###   ########.fr       */
+/*   Updated: 2021/03/27 12:40:31 by tayamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,15 @@ static int	read_file(char *text[], const int fd)
 	return (1);
 }
 
-static int	set_line(char *text[], const int fd, char **line, char *ptr)
+static int	set_line(char *text[], const int fd, char **line)
 {
 	char	*tmp;
+	char	*ptr;
 
 	if (ft_strlen(text[fd]))
 	{
-		if (!ft_strchr(text[fd], '\n'))
+		ptr = ft_strchr(text[fd], '\n');
+		if (ptr == NULL)
 		{
 			*line = ft_strdup(text[fd]);
 			ft_free_null(&(text[fd]));
@@ -103,13 +105,11 @@ static int	check_parameters(int fd, char **line, char *text[])
 int	get_next_line(int fd, char **line)
 {
 	static char	*text[1024];
-	char		*ptr;
 	int			ret;
 
 	if (check_parameters(fd, line, text) == -1)
 		return (-1);
-	ptr = ft_strchr(text[fd], '\n');
-	while (ptr == NULL)
+	while (ft_strchr(text[fd], '\n') == NULL)
 	{
 		ret = read_file(text, fd);
 		if (!ret)
@@ -119,7 +119,6 @@ int	get_next_line(int fd, char **line)
 			ft_free_null(&(text[fd]));
 			return (-1);
 		}
-		ptr = ft_strchr(text[fd], '\n');
 	}
-	return (set_line(text, fd, line, ptr));
+	return (set_line(text, fd, line));
 }
