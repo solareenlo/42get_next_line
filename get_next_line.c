@@ -59,7 +59,6 @@ static int	read_file(char *text[], const int fd)
 
 static int	set_line(char *text[], const int fd, char **line)
 {
-	char	*tmp;
 	char	*ptr;
 
 	if (ft_strlen(text[fd]))
@@ -73,9 +72,8 @@ static int	set_line(char *text[], const int fd, char **line)
 		}
 		*ptr = '\0';
 		*line = ft_strdup(text[fd]);
-		tmp = ft_strdup(ptr + 1);
 		ft_free_null(&(text[fd]));
-		text[fd] = tmp;
+		text[fd] = ft_strdup(&ptr[1]);
 	}
 	else
 	{
